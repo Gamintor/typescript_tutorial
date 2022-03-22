@@ -1,6 +1,35 @@
-import multiply, { multByTwo, HelloWorld } from './multiply';
+class Robot {
+	#name: string;
 
-const a = 2;
-const b = 6;
+	private somePrivateField = 'it is private!!!';
 
-console.log(`${a} × ${b} = ${multiply(a, b)}`);
+	constructor(name: string) {
+		this.#name = name;
+	}
+
+	getName(): string {
+		return this.#name;
+	}
+}
+
+class AdvancedRobot extends Robot {
+	#name: string;
+
+	private somePrivateField = 'OVERRIDEN FIELD';
+
+	constructor(name: string) {
+		super(name);
+		this.#name = 'Advanced' + name;
+	}
+
+	getAdvancedName(): string {
+		return this.#name;
+	}
+}
+
+const robot = new AdvancedRobot('Lojza');
+
+console.log('Private field', robot.somePrivateField);
+
+console.log('Parent class: ', robot.getName());
+console.log('Subclass: ', robot.getAdvancedName());
