@@ -1,35 +1,8 @@
-class Robot {
-	#name: string;
+import { calculateTotalAmount } from './lib/calculate-total-amount';
+import { Order } from './lib/order';
+import { ShoppingCart } from './lib/shopping-cart';
 
-	private somePrivateField = 'it is private!!!';
-
-	constructor(name: string) {
-		this.#name = name;
-	}
-
-	getName(): string {
-		return this.#name;
-	}
-}
-
-class AdvancedRobot extends Robot {
-	#name: string;
-
-	private somePrivateField = 'OVERRIDEN FIELD';
-
-	constructor(name: string) {
-		super(name);
-		this.#name = 'Advanced' + name;
-	}
-
-	getAdvancedName(): string {
-		return this.#name;
-	}
-}
-
-const robot = new AdvancedRobot('Lojza');
-
-console.log('Private field', robot.somePrivateField);
-
-console.log('Parent class: ', robot.getName());
-console.log('Subclass: ', robot.getAdvancedName());
+const cart = new ShoppingCart();
+console.log("Cart's total is", calculateTotalAmount(cart));
+const order = new Order();
+console.log("Order's total is", calculateTotalAmount(order));
