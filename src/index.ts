@@ -1,8 +1,42 @@
-import { calculateTotalAmount } from './lib/calculate-total-amount';
-import { Order } from './lib/order';
-import { ShoppingCart } from './lib/shopping-cart';
+interface Animal {
+	name: string;
+	group: string | undefined;
+	setGroup(group: string): void;
+}
 
-const cart = new ShoppingCart();
-console.log("Cart's total is", calculateTotalAmount(cart));
-const order = new Order();
-console.log("Order's total is", calculateTotalAmount(order));
+class Cat implements Animal {
+	name: string;
+	group: string | undefined;
+	constructor(name: string) {
+		this.name = name;
+	}
+	setGroup(group: string): void {
+		this.group = group;
+	}
+}
+class Dog implements Animal {
+	name: string;
+	group: string | undefined;
+	constructor(name: string) {
+		this.name = name;
+	}
+	setGroup(group: string): void {
+		this.group = group;
+	}
+	bark(): void {
+		console.log('Vau Vau');
+	}
+}
+
+interface AnimalConstructor<T> {
+	new (name: string): T;
+}
+
+function initializeAnimal<T extends Animal>(Animal: AnimalConstructor<T>, name: string) {
+	const animal = new Animal(name);
+	animal.setGroup('mammals');
+	return animal;
+}
+
+const cat = initializeAnimal(Cat, 'Athena');
+const dog = initializeAnimal(Dog, 'Ares');
