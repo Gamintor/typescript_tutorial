@@ -1,27 +1,17 @@
-"use strict";
-class Cat {
-    constructor(name) {
-        this.name = name;
-    }
-    setGroup(group) {
-        this.group = group;
-    }
-}
-class Dog {
-    constructor(name) {
-        this.name = name;
-    }
-    setGroup(group) {
-        this.group = group;
-    }
-    bark() {
-        console.log('Vau Vau');
-    }
-}
-function initializeAnimal(Animal, name) {
-    const animal = new Animal(name);
-    animal.setGroup('mammals');
-    return animal;
-}
-const cat = initializeAnimal(Cat, 'Athena');
-const dog = initializeAnimal(Dog, 'Ares');
+const chocoCake = [{ expiryDate: new Date() }];
+const fruitCake = [{ expiryDate: new Date() }];
+const getExpiredItems = items => {
+    const currentDate = new Date().getTime();
+    return items.filter(cake => cake.expiryDate.getTime() < currentDate);
+};
+const expiredChokoCakes = getExpiredItems(chocoCake);
+const expiredFruitCakes = getExpiredItems(fruitCake);
+const cart = {
+    items: [],
+    addItem(item) {
+        this.items.push(item);
+    },
+    getItem(id) {
+        return this.items.find(e => e.id === id);
+    },
+};

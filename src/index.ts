@@ -1,42 +1,28 @@
-interface Expirable {
-	expiryDate: Date;
-}
-
-interface ChocolateCake extends Expirable {}
-interface FruitCake extends Expirable {}
-
-const chocoCake: ChocolateCake[] = [{ expiryDate: new Date() }];
-const fruitCake: FruitCake[] = [{ expiryDate: new Date() }];
-
-interface getExpiredItemsFunction {
-	<Item extends Expirable>(items: Array<Item>): Array<Item>;
-}
-
-const getExpiredItems: getExpiredItemsFunction = items => {
-	const currentDate = new Date().getTime();
-	return items.filter(cake => cake.expiryDate.getTime() < currentDate);
+type Properties = 'propA' | 'propB';
+type MyMappedType<Properties extends string | number | symbol> = {
+	[P in Properties]: P;
 };
 
-const expiredChokoCakes = getExpiredItems<ChocolateCake>(chocoCake);
-const expiredFruitCakes = getExpiredItems<FruitCake>(fruitCake);
+type MyNewType = MyMappedType<'propA' | 'propB'>;
 
-interface ShoppingCart<ItemId, Item> {
-	items: Array<Item>;
-	addItem(this: ShoppingCart<ItemId, Item>, item: Item): void;
-	getItem(this: ShoppingCart<ItemId, Item>, itemId: ItemId): Item | undefined;
-}
-
-interface Item {
-	price: number;
-	id: number;
-}
-
-const cart: ShoppingCart<number, Item> = {
-	items: [],
-	addItem(item) {
-		this.items.push(item);
-	},
-	getItem(id) {
-		return this.items.find(e => e.id === id);
-	},
+type MyMappedTyp<T> = {
+	[P in keyof T]: T[P];
 };
+
+type MyNewTyp = MyMappedTyp<{ a: 1; b: 2 }>;
+
+type Pick1<T, Properties extends keyof T> = {
+	[P in Properties]: T[P];
+};
+
+type MyPick = Pick1<{ a: 'a'; b: 'b' }, 'b'>;
+
+type Record1<K extends keyof any, T> = {
+	[P in K]: T;
+} & { someProp: string };
+
+const someRecord: Record1<'A' | 'B', number> = { A: 10, B: 12, someProp: 'prop' };
+
+interface Record2 {
+	[key: number]: number;
+}
