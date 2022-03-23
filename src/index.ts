@@ -1,42 +1,42 @@
-interface Animal {
-	name: string;
-	group: string | undefined;
-	setGroup(group: string): void;
+interface Expirable {
+	expiryDate: Date;
 }
 
-class Cat implements Animal {
-	name: string;
-	group: string | undefined;
-	constructor(name: string) {
-		this.name = name;
-	}
-	setGroup(group: string): void {
-		this.group = group;
-	}
-}
-class Dog implements Animal {
-	name: string;
-	group: string | undefined;
-	constructor(name: string) {
-		this.name = name;
-	}
-	setGroup(group: string): void {
-		this.group = group;
-	}
-	bark(): void {
-		console.log('Vau Vau');
-	}
+interface ChocolateCake extends Expirable {}
+interface FruitCake extends Expirable {}
+
+const chocoCake: ChocolateCake[] = [{ expiryDate: new Date() }];
+const fruitCake: FruitCake[] = [{ expiryDate: new Date() }];
+
+interface getExpiredItemsFunction {
+	<Item extends Expirable>(items: Array<Item>): Array<Item>;
 }
 
-interface AnimalConstructor<T> {
-	new (name: string): T;
+const getExpiredItems: getExpiredItemsFunction = items => {
+	const currentDate = new Date().getTime();
+	return items.filter(cake => cake.expiryDate.getTime() < currentDate);
+};
+
+const expiredChokoCakes = getExpiredItems<ChocolateCake>(chocoCake);
+const expiredFruitCakes = getExpiredItems<FruitCake>(fruitCake);
+
+interface ShoppingCart<ItemId, Item> {
+	items: Array<Item>;
+	addItem(this: ShoppingCart<ItemId, Item>, item: Item): void;
+	getItem(this: ShoppingCart<ItemId, Item>, itemId: ItemId): Item | undefined;
 }
 
-function initializeAnimal<T extends Animal>(Animal: AnimalConstructor<T>, name: string) {
-	const animal = new Animal(name);
-	animal.setGroup('mammals');
-	return animal;
+interface Item {
+	price: number;
+	id: number;
 }
 
-const cat = initializeAnimal(Cat, 'Athena');
-const dog = initializeAnimal(Dog, 'Ares');
+const cart: ShoppingCart<number, Item> = {
+	items: [],
+	addItem(item) {
+		this.items.push(item);
+	},
+	getItem(id) {
+		return this.items.find(e => e.id === id);
+	},
+};
